@@ -1,0 +1,43 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
+
+version: '3.4'
+
+services:
+  authdb:
+    container_name: authdb
+    image: mysql:8.0.29-oracle
+    environment:
+      - MYSQL_ROOT_PASSWORD=abcDEF123#
+    networks:
+      - backend
+    ports:
+      - 8001:3306
+
+  dictionarydb:
+    container_name: dictionarydb
+    build:
+      context: ./db_postgres
+      dockerfile: Dockerfile
+    ports:
+      - 8002:5432
+    volumes:
+      - "./db_postgres/postgresql_data/:/postgresql_data/"
+    networks:
+      - backend
+    env_file:
+      - ./.env
+  
+  edictionarywebapi:
+    image: edictionarywebapi
+    build:
+      context: .
+      dockerfile: eDictionaryWebAPI/Dockerfile
+    ports:
+      - 5094:5094
+    networks:
+      - backend
+    depends_on:
+      - authdb
+
+networks:
+  backend:

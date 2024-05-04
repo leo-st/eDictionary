@@ -1,0 +1,13 @@
+# db_auth
+db_auth
+# db_postgres
+db_postgres/postgresql_data
+# webapi
+eDictionaryWebAPI/bin
+eDictionaryWebAPI/obj
+eDictionaryWebAPI/appsettings.json
+eDictionaryWebAPI/appsettings.Development.json
+.env
+
+# client
+eDictionaryClient/app/node_modules

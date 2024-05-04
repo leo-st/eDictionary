@@ -1,2 +1,2 @@
 # eDictionary
- Keep track of your language learning progress by creating and managing your own personalized dictionary of words, allowing you to easily revisit and reinforce what you've learned.
+ eDictionary is a comprehensive application designed to facilitate language learning by enabling users to create and maintain their own personal dictionary of words. With this app, users can effortlessly track their progress and retain knowledge by storing newly learned vocabulary. Whether you're a beginner or an advanced learner, eDictionary ensures that you can easily revisit and reinforce your language skills at any time.

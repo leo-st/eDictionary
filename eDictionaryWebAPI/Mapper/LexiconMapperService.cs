@@ -13,9 +13,11 @@ public class LexiconMapperService : IMapperService< LexiconModel, Lexicon>
         var destination = new Lexicon
         {
             Word = source.Word,
+            WordClass = source.WordClass,
             Article = source.Article,
             Translation = source.Translation,
-            Description = source.Description
+            Description = source.Description,
+            ContextExample = source.ContextExample
         };
 
         // No special case handling needed for FirstLetter, as it's a property of Lexicon entity

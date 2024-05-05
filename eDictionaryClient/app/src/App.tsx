@@ -1,13 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Lexicon from "./components/Lexicon";
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-red-600">
-      Simple React Typescript Tailwind Sample
-    </h1>
-  );  
+    <div className="bg-green-950">
+      <h1 className="text-3xl font-bold underline text-red-600">
+        Simple React Typescript Tailwind Sample
+      </h1>
+      <Lexicon />
+    </div>
+  );
 }
 
 export default App;

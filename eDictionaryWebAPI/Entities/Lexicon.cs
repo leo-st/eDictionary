@@ -10,6 +10,8 @@ public class Lexicon
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")]
     public int Id { get; set; }
+    [Column("word_class")]
+    public string? WordClass { get; set; }
     [Column("word")]
     public string? Word { get; set; }
     [Column("article")]
@@ -20,4 +22,6 @@ public class Lexicon
     public string? FirstLetter { get; set; }
     [Column("description")]
     public string? Description { get; set; }
+    [Column("context_example")]
+    public string? ContextExample { get; set; }
 }

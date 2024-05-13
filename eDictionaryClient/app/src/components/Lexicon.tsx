@@ -6,32 +6,32 @@ import LexiconWord from "../types/LexiconWord";
 import SameLetterWordsList from "./SameLetterWordsList";
 
 const GERMAN_ALPHABET = [
-  { letter: "A", name: "ah" },
-  { letter: "B", name: "bay" },
-  { letter: "C", name: "tsay" },
-  { letter: "D", name: "day" },
-  { letter: "E", name: "eh" },
-  { letter: "F", name: "eff" },
-  { letter: "G", name: "gay" },
-  { letter: "H", name: "hah" },
-  { letter: "I", name: "ee" },
-  { letter: "J", name: "yot" },
-  { letter: "K", name: "kah" },
-  { letter: "L", name: "ell" },
-  { letter: "M", name: "emm" },
-  { letter: "N", name: "enn" },
-  { letter: "O", name: "oh" },
-  { letter: "P", name: "pay" },
-  { letter: "Q", name: "koo" },
-  { letter: "R", name: "air" },
-  { letter: "S", name: "ess" },
-  { letter: "T", name: "tay" },
-  { letter: "U", name: "oo" },
-  { letter: "V", name: "fow" },
-  { letter: "W", name: "vay" },
-  { letter: "X", name: "eeks" },
-  { letter: "Y", name: "oop-si-lohn" },
-  { letter: "Z", name: "tset" },
+  { letter: "A", col_number: 1, name: "ah" },
+  { letter: "B", col_number: 1, name: "bay" },
+  { letter: "C", col_number: 1, name: "tsay" },
+  { letter: "D", col_number: 1, name: "day" },
+  { letter: "E", col_number: 1, name: "eh" },
+  { letter: "F", col_number: 1, name: "eff" },
+  { letter: "G", col_number: 1, name: "gay" },
+  { letter: "H", col_number: 1, name: "hah" },
+  { letter: "I", col_number: 1, name: "ee" },
+  { letter: "J", col_number: 2, name: "yot" },
+  { letter: "K", col_number: 2, name: "kah" },
+  { letter: "L", col_number: 2, name: "ell" },
+  { letter: "M", col_number: 2, name: "emm" },
+  { letter: "N", col_number: 2, name: "enn" },
+  { letter: "O", col_number: 2, name: "oh" },
+  { letter: "P", col_number: 2, name: "pay" },
+  { letter: "Q", col_number: 2, name: "koo" },
+  { letter: "R", col_number: 2, name: "air" },
+  { letter: "S", col_number: 3, name: "ess" },
+  { letter: "T", col_number: 3, name: "tay" },
+  { letter: "U", col_number: 3, name: "oo" },
+  { letter: "V", col_number: 3, name: "fow" },
+  { letter: "W", col_number: 3, name: "vay" },
+  { letter: "X", col_number: 3, name: "eeks" },
+  { letter: "Y", col_number: 3, name: "oop-si-lohn" },
+  { letter: "Z", col_number: 3, name: "tset" },
 ];
 
 const Lexicon: React.FC = () => {
@@ -56,21 +56,27 @@ const Lexicon: React.FC = () => {
   return (
     <div>
       <h2>German Alphabet</h2>
-      <ul>
-        {GERMAN_ALPHABET.map((item) => (
-          <li key={item.letter}>
-            <LetterCard letter={item.letter}/>
-            <SameLetterWordsList words={lexiconWordsState.filter(word => word.firstLetter.toUpperCase()===item.letter.toUpperCase())} />
-            {/* {item.letter} - {item.name}
-            <div>
-                <p>word</p>
-                <p>translation</p>
-            </div> */}
-          </li>
+      <div className="grid grid-cols-3 gap-4">
+        {Array.from({ length: 3 }, (_, i) => i + 1).map(col_number => (
+          <div key={`col-${col_number}`} className="col-span-1">
+            {GERMAN_ALPHABET.filter(item => item.col_number === col_number).map(item => (
+              <div key={item.letter}>
+                <LetterCard letter={item.letter}/>
+                <SameLetterWordsList words={lexiconWordsState.filter(word => word.firstLetter.toUpperCase()===item.letter.toUpperCase())} />
+                {/* {item.letter} - {item.name}
+                <div>
+                    <p>word</p>
+                    <p>translation</p>
+                </div> */}
+              </div>
+            ))}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
+  
+  
 };
 
 export default Lexicon;

@@ -13,16 +13,25 @@ const ModalContent: React.FC<{onClose: () => void , word: LexiconWord}> = ({ onC
     
   }, []);
 
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        // Handle the "Esc" key press here
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [onClose]);
+
   return createPortal(
     <dialog ref={dialogRef}>
-      {/* <div className="modal">
-        <div>I'm a modal dialog</div>
-        <button onClick={onClose}>Close</button>
-      </div> */}
-      {/* <div>
-      {word.translation}
-      </div> */}
-      <div className="modal">
+      <div className="modal" onClick={e => e.stopPropagation()}>
       <div className="m-8 text-black">
         <div>
           <div className="flex">

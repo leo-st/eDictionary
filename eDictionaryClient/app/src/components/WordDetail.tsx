@@ -10,11 +10,15 @@ const WordDetail: React.FC<LexiconWord> = ({ ...word }) => {
   return (
     <div className="m-8 text-white">
       {detailIsVisible === false ? (
-        <h3 onClick={detailsIsVisibleHandler} className="font-bold">{word.word}</h3>
+        <h3 onClick={detailsIsVisibleHandler} className="font-bold">
+          {word.word}
+        </h3>
       ) : null}
       {detailIsVisible === true ? (
         <div>
-          <h3 onClick={detailsIsVisibleHandler} className="font-bold">{word.word}</h3>
+          <h3 onClick={detailsIsVisibleHandler} className="font-bold">
+            {word.word}
+          </h3>
           <div className="flex">
             <div className="w-1/8 text-white p-4">Translation: </div>
             <div className="w-1/8 font-bold text-white p-4">
@@ -23,9 +27,7 @@ const WordDetail: React.FC<LexiconWord> = ({ ...word }) => {
           </div>
           <div className="flex">
             <div className="w-1/8 text-white p-4">Article: </div>
-            <div className="w-1/8 font-bold text-white p-4">
-              {word.article}
-            </div>
+            <div className="w-1/8 font-bold text-white p-4">{word.article}</div>
           </div>
           <div className="flex">
             <div className="w-1/8 text-white p-4">Description: </div>
@@ -38,7 +40,7 @@ const WordDetail: React.FC<LexiconWord> = ({ ...word }) => {
             <div className="w-1/8 font-bold text-white p-4">
               {word.contextExample}
             </div>
-          </div>
+          </div>          
         </div>
       ) : null}
     </div>

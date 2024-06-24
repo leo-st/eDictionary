@@ -1,10 +1,18 @@
 using eDictionaryWebAPI.Models;
 using eDictionaryWebAPI.Entities;
+using eDictionaryWebAPI.Data;
 
 namespace eDictionaryWebAPI.Mapper;
 
-public class LexiconMapperService : IMapperService< LexiconModel, Lexicon>
+public class LexiconMapperService : IMapperService<LexiconModel, Lexicon>
 {
+    private readonly DictionaryDbContext _context;
+
+    public LexiconMapperService(DictionaryDbContext context)
+    {
+        _context = context;
+    }
+
     public Lexicon Map(LexiconModel source)
     {
         if (source == null)
@@ -13,15 +21,21 @@ public class LexiconMapperService : IMapperService< LexiconModel, Lexicon>
         var destination = new Lexicon
         {
             Word = source.Word,
-            WordClass = source.WordClass,
-            Article = source.Article,
             Translation = source.Translation,
             Description = source.Description,
-            ContextExample = source.ContextExample
+            ContextExample = source.ContextExample,
+            FirstLetter = source.Word?.Substring(0, 1).ToUpper()
         };
 
-        // No special case handling needed for FirstLetter, as it's a property of Lexicon entity
-        destination.FirstLetter = source.Word.Substring(0, 1).ToUpper();
+        if (int.TryParse(source.WordTypeId, out int wordTypeId))
+        {   
+            destination.WordType = _context.WordTypes.Find(wordTypeId);
+        }
+
+        // if (!string.IsNullOrEmpty(source.GenderId))
+        // {
+        //     destination.Gender = _context.Genders.Find(source.GenderId);
+        // }
 
         return destination;
     }

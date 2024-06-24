@@ -1,67 +1,102 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import LexiconWord from "../types/LexiconWord";
+import LexiconWord, { WordType } from "../types/LexiconWord";
+import ConjugationDetail from "./ConjugationDetail";
+import GenderWordDetail from "./GenderWordDetail";
+import WordInfo from "./WordInfo";
+import WordInfoEdit from "./WordInfoEdit";
+import {fetchAllWordTypes} from '../http';
 
-const ModalContent: React.FC<{onClose: () => void , word: LexiconWord}> = ({ onClose, word }) =>{
-  const portalDiv = document.getElementById('modal')!;
+const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord }> = ({
+  onClose,
+  word,
+}) => {
+  const portalDiv = document.getElementById("modal")!;
   const dialogRef = useRef<HTMLDialogElement | null>(null);
 
+  const [openedDetails, setOpenedDetails] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
+  const [wordTypes, setWordTypes] = useState<WordType[]>([]);
+
+  function openDetails() {
+    setOpenedDetails(!openedDetails);
+  }
+
+  function handleEditing() {
+    setIsEdited(!isEdited);
+  }
+
   useEffect(() => {
-    if(dialogRef.current){
+    async function fetchWordTypes(){
+      //setIsFetching(true);
+      try{
+        const lexiconWords = await fetchAllWordTypes();
+        setWordTypes(lexiconWords);
+      }
+      catch(error){
+        console.log(error)
+      }
+      //setIsFetching(false);
+    }
+    fetchWordTypes();
+  }, [])
+
+  useEffect(() => {
+    if (dialogRef.current) {
       dialogRef.current.showModal();
     }
-    
   }, []);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         // Handle the "Esc" key press here
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleKeyPress);
+
+    document.addEventListener("keydown", handleKeyPress);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('keydown', handleKeyPress);
+      document.removeEventListener("keydown", handleKeyPress);
     };
   }, [onClose]);
 
   return createPortal(
     <dialog ref={dialogRef}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
-      <div className="m-8 text-black">
-        <div>
-          <div className="flex">
-            <div className="w-1/8 text-black p-4">Translation: </div>
-            <div className="w-1/8 font-bold text-black p-4">
-              {word.translation}
-            </div>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
+        {!isEdited ? (
+          <div className="m-8 text-black">
+            <button onClick={handleEditing}>Edit</button>
+            <WordInfo word={word} />
+            {word.wordType.id === 1 || word.wordType.id === 3 ? (
+              <div>
+                <button onClick={openDetails}>Toggle Details</button>
+              </div>
+            ) : undefined}
+            {openedDetails && word.wordType.id === 1 ? (
+              <GenderWordDetail word={word} />
+            ) : undefined}
+            {openedDetails && word.wordType.id === 3 ? (
+              <ConjugationDetail word={word} />
+            ) : undefined}
+
+            <button onClick={onClose}>Close</button>
           </div>
-          <div className="flex">
-            <div className="w-1/8 text-black p-4">Article: </div>
-            <div className="w-1/8 font-bold text-black p-4">{word.article}</div>
+        ) : (
+          <div className="m-8 text-black">
+            <WordInfoEdit word={word} possibleWordTypes={wordTypes}/>
+
+
+            <button onClick={onClose}>Close</button>
           </div>
-          <div className="flex">
-            <div className="w-1/8 text-black p-4">Description: </div>
-            <div className="w-1/8 font-bold text-black p-4">
-              {word.description}
-            </div>
-          </div>
-          <div className="flex">
-            <div className="w-1/8 text-black p-4">Example: </div>
-            <div className="w-1/8 font-bold text-black p-4">
-              {word.contextExample}
-            </div>
-          </div>          
-        </div>
-        <button onClick={onClose}>Close</button>
-    </div>
-    </div>
-    </dialog>,portalDiv
+        )}
+      </div>
+    </dialog>,
+    portalDiv
   );
-}
+};
 
 export default ModalContent;

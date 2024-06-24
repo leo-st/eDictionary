@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import LexiconListProps from "../types/props/LexiconListProps";
 import ModalContent from "./ModalContent";
+import LexiconWord from "../types/LexiconWord";
 
 const SameLetterWordsList: React.FC<LexiconListProps> = ({ words }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [wordDetail, setWordDetail] = useState<LexiconWord>();
 
-  function handleClickDetail() {
+  function handleClickDetail(word: LexiconWord) {
     setShowModal(true);
+    setWordDetail(word);
   }
+
+
+
   return (
     <div
       className="m-8 text-white"
@@ -21,16 +27,16 @@ const SameLetterWordsList: React.FC<LexiconListProps> = ({ words }) => {
       <ul>
         {words.map((word) => (
           <li key={word.id}>
-            <div className="text-white font-bold" onClick={handleClickDetail}>
+            <div className="text-white font-bold" onClick={() => handleClickDetail(word)}>
               {word.word}
             </div>
-            {showModal && (
-              <ModalContent onClose={() => setShowModal(false)} word={word} />
-            )}
           </li>
         ))}
         <li></li>
       </ul>
+      {showModal && wordDetail && (
+              <ModalContent onClose={() => setShowModal(false)}  word={wordDetail} />
+            )}
     </div>
   );
 };

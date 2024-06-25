@@ -31,10 +31,14 @@ public class DictionaryController : ControllerBase
     // }
 
     [HttpPost("InsertWord")]
-    public async Task<ActionResult> InsertWord(LexiconModel model)
+    public async Task<ActionResult> InsertWord(LexiconCreateModel model)
     {
-        await _service.InsertNewWord(model);
-        return Ok(); // Return 200 with the list of words
+        if(await _service.InsertNewWord(model)){
+            return Ok();
+        }
+        else{
+            return BadRequest();
+        }
     }
     [HttpGet("GetAllWords")]
     public async Task<ActionResult<IEnumerable<Lexicon>>> GetAllWords()
@@ -59,5 +63,15 @@ public class DictionaryController : ControllerBase
         }
 
         return Ok(words); // Return 200 with the list of words
+    }
+    [HttpPost("EditWord")]
+    public async Task<ActionResult> EditWord(LexiconEditModel model)
+    {
+        if(await _service.EditWord(model)){
+            return Ok();
+        }
+        else{
+            return BadRequest();
+        }
     }
 }

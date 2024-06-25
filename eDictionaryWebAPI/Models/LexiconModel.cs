@@ -4,12 +4,24 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eDictionaryWebAPI.Models;
 
+public class LexiconCreateModel : LexiconModel
+{
+    public required string Word { get; set; }
+    public required string Translation { get; set; }
+    public required int WordTypeId { get; set; }
+
+}
+
+public class LexiconEditModel : LexiconModel
+{
+    public required int Id {get; set;}
+    public string? Translation { get; set; }
+    public int? WordTypeId { get; set; }
+
+}
+
 public class LexiconModel
 {
-    public string Word { get; set; }
-    public string Translation { get; set; }
-    public string? WordTypeId { get; set; }
-    public string? short_name { get; set; }
     public string? Description { get; set; }
     public string? ContextExample { get; set; }
     public GenderWordsModel? GenderWordsModel{ get; set; }

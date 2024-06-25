@@ -6,20 +6,16 @@ export interface WordType{
 }
 
 
-interface GenderWords{
-  id: number;
+export interface GenderWords{
+  lexicon_id: number;
   musculine: string;
   feminine: string;
   neutral: string;
   
 }
-interface GenderWordsLexicons{
-  genderWordsId: number;
-  genderWords: GenderWords;
-}
 
-interface Conjugation{
-  id: number;
+export interface Conjugation{
+  lexicon_id: number;
   singular1: string;
   singular2: string;
   singular3: string;
@@ -27,11 +23,6 @@ interface Conjugation{
   plural2: string;
   plural3: string;
   infinite: string;
-}
-
-interface conjugationLexicons{
-  conjugationId: number;
-  conjugation: Conjugation;
 }
 interface LexiconWord {
     id: number;
@@ -41,8 +32,8 @@ interface LexiconWord {
     firstLetter: string;
     description: string;
     contextExample: string;
-    genderWordsLexicons: GenderWordsLexicons[];
-    conjugationLexicons: conjugationLexicons[];
+    genderWords: GenderWords | null;
+    conjugation: Conjugation | null;
   }
 
 export default LexiconWord;

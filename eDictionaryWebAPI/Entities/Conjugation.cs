@@ -9,9 +9,10 @@ public class Conjugation
 {
 
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id")]
-    public int Id { get; set; }
+    [Column("lexicon_id")]
+    public int LexiconId { get; set; }
+    [ForeignKey("LexiconId")]
+    public Lexicon Lexicon { get; set; } // Navigation property
     [Column("1_singular")]
     public string? Singular1 { get; set; }
     [Column("2_singular")]
@@ -26,6 +27,4 @@ public class Conjugation
     public string? Plural3 { get; set; }
     [Column("infinite")]
     public string? Infinite { get; set; }
-    [JsonIgnore]
-    public ICollection<ConjugationLexicon>? ConjugationLexicons { get; set; }
 }

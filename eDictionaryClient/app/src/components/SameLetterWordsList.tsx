@@ -13,7 +13,6 @@ const SameLetterWordsList: React.FC<LexiconListProps> = ({ words }) => {
   }
 
 
-
   return (
     <div
       className="m-8 text-white"
@@ -35,7 +34,7 @@ const SameLetterWordsList: React.FC<LexiconListProps> = ({ words }) => {
         <li></li>
       </ul>
       {showModal && wordDetail && (
-              <ModalContent onClose={() => setShowModal(false)}  word={wordDetail} />
+              <ModalContent onClose={() => setShowModal(false)}  word={wordDetail}/>
             )}
     </div>
   );

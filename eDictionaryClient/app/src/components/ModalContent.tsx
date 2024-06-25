@@ -7,7 +7,7 @@ import WordInfo from "./WordInfo";
 import WordInfoEdit from "./WordInfoEdit";
 import {fetchAllWordTypes} from '../http';
 
-const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord }> = ({
+const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord; }> = ({
   onClose,
   word,
 }) => {
@@ -87,7 +87,7 @@ const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord }> = ({
           </div>
         ) : (
           <div className="m-8 text-black">
-            <WordInfoEdit word={word} possibleWordTypes={wordTypes}/>
+            <WordInfoEdit word={word} possibleWordTypes={wordTypes} onCloseDialog={onClose}/>
 
 
             <button onClick={onClose}>Close</button>

@@ -31,7 +31,7 @@ builder.Services.AddDbContext<DictionaryDbContext>(options =>
 builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AuthContext>();
 
 // Correct registration of LexiconMapperService
-builder.Services.AddScoped<IMapperService<LexiconModel, Lexicon >, LexiconMapperService>();
+//builder.Services.AddScoped<IMapperService<LexiconModel, Lexicon >, LexiconMapperService>();
 builder.Services.AddScoped<ILexiconService, LexiconService>();
 
 

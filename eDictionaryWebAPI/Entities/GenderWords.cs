@@ -9,15 +9,15 @@ public class GenderWords
 {
 
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id")]
-    public int Id { get; set; }
+    [Column("lexicon_id")]
+    public int LexiconId { get; set; }
+    [ForeignKey("LexiconId")]
+    public Lexicon Lexicon { get; set; } // Navigation property
+
     [Column("musculine")]
     public string? Musculine { get; set; }
     [Column("feminine")]
     public string? Feminine { get; set; }
     [Column("neutral")]
     public string? Neutral { get; set; }
-    [JsonIgnore]
-    public ICollection<GenderWordsLexicon>? GenderWordsLexicons { get; set; }
 }

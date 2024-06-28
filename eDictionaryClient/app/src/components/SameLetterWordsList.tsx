@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import LexiconListProps from "../types/props/LexiconListProps";
+//import LexiconListProps from "../types/props/LexiconListProps";
 import ModalContent from "./ModalContent";
 import LexiconWord from "../types/LexiconWord";
 
-const SameLetterWordsList: React.FC<LexiconListProps> = ({ words }) => {
+const SameLetterWordsList: React.FC<{words:LexiconWord[]; onEditSubmit: (word: LexiconWord) => void}> = ({ words,  onEditSubmit }) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [wordDetail, setWordDetail] = useState<LexiconWord>();
 
@@ -34,7 +34,7 @@ const SameLetterWordsList: React.FC<LexiconListProps> = ({ words }) => {
         <li></li>
       </ul>
       {showModal && wordDetail && (
-              <ModalContent onClose={() => setShowModal(false)}  word={wordDetail}/>
+              <ModalContent onClose={() => setShowModal(false)}  word={wordDetail} onEditSubmit={onEditSubmit}/>
             )}
     </div>
   );

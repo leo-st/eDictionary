@@ -53,6 +53,14 @@ const Lexicon: React.FC = () => {
     fetchLexiconWords();
   }, [])
 
+  function handleEditSubmit(word: LexiconWord){
+    setLexiconWords(prevWords =>
+      prevWords.map(existingWord =>
+        existingWord.id === word.id ? word : existingWord
+      )
+    );
+  }
+
   return (
     <div>
       <h2>German Alphabet</h2>
@@ -62,7 +70,7 @@ const Lexicon: React.FC = () => {
             {GERMAN_ALPHABET.filter(item => item.col_number === col_number).map(item => (
               <div key={item.letter}>
                 <LetterCard letter={item.letter}/>
-                <SameLetterWordsList words={lexiconWordsState.filter(word => word.firstLetter.toUpperCase()===item.letter.toUpperCase())} />
+                <SameLetterWordsList words={lexiconWordsState.filter(word => word.firstLetter.toUpperCase()===item.letter.toUpperCase())} onEditSubmit={handleEditSubmit} />
                 {/* {item.letter} - {item.name}
                 <div>
                     <p>word</p>

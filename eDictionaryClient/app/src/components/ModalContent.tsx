@@ -5,11 +5,12 @@ import ConjugationDetail from "./ConjugationDetail";
 import GenderWordDetail from "./GenderWordDetail";
 import WordInfo from "./WordInfo";
 import WordInfoEdit from "./WordInfoEdit";
-import {fetchAllWordTypes} from '../http';
+import {editWord, fetchAllWordTypes} from '../http';
 
-const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord; }> = ({
+const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord; onEditSubmit: (word: LexiconWord) => void }> = ({
   onClose,
   word,
+  onEditSubmit
 }) => {
   const portalDiv = document.getElementById("modal")!;
   const dialogRef = useRef<HTMLDialogElement | null>(null);
@@ -64,6 +65,16 @@ const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord; }> = ({
     };
   }, [onClose]);
 
+  async function handleFormSubmit(word: LexiconWord){
+    try {
+      await editWord(word);
+      onEditSubmit(word);
+    } catch (error) {
+      console.error('Failed to update word:', error);
+      // Handle error state or feedback to user
+    }
+  }
+
   return createPortal(
     <dialog ref={dialogRef}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -87,7 +98,7 @@ const ModalContent: React.FC<{ onClose: () => void; word: LexiconWord; }> = ({
           </div>
         ) : (
           <div className="m-8 text-black">
-            <WordInfoEdit word={word} possibleWordTypes={wordTypes} onCloseDialog={onClose}/>
+            <WordInfoEdit word={word} possibleWordTypes={wordTypes} onCloseDialog={onClose} onEditSubmit={handleFormSubmit}/>
 
 
             <button onClick={onClose}>Close</button>

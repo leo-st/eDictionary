@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import LexiconWord, { WordType, GenderWords, Conjugation } from '../types/LexiconWord'; // Adjust the import path as needed
-import { editWord } from '../http';
 import GenderWordDetailEdit from './GenderWordDetailEdit'; // Adjust the import path as needed
 import ConjugationDetailEdit from './ConjugationDetailEdit'; // Adjust the import path as needed
 
@@ -8,7 +7,8 @@ const WordInfoEdit: React.FC<{
   word: LexiconWord;
   possibleWordTypes: WordType[];
   onCloseDialog: () => void;
-}> = ({ word, possibleWordTypes, onCloseDialog }) => {
+  onEditSubmit: (word: LexiconWord) => void;
+}> = ({ word, possibleWordTypes, onCloseDialog, onEditSubmit }) => {
   const [translation, setTranslation] = useState<string>(word.translation);
   const [selectedWordType, setSelectedWordType] = useState<string>(word.wordType.name);
   const [description, setDescription] = useState<string>(word.description);
@@ -60,13 +60,8 @@ const WordInfoEdit: React.FC<{
       conjugation: selectedWordType === "Verbs" ? conjugation: null,
     };
 
-    try {
-      await editWord(updatedWord);
-      onCloseDialog();
-    } catch (error) {
-      console.error('Failed to update word:', error);
-      // Handle error state or feedback to user
-    }
+    onEditSubmit(updatedWord);
+    onCloseDialog();
   };
 
   return (

@@ -1,7 +1,8 @@
 import LexiconWord, { WordType } from "./types/LexiconWord";
+const apiUrl = process.env.REACT_APP_API_DOMAIN_URL;
 
 export async function fetchAllWords(): Promise<LexiconWord[]> {
-  const response = await fetch("https://localhost:7275/Dictionary/GetAllWords");
+  const response = await fetch(`${apiUrl}/Dictionary/GetAllWords`);
   const resData: LexiconWord[] = await response.json();
   if (!response.ok) {
     console.log("ne valja");
@@ -12,7 +13,7 @@ export async function fetchAllWords(): Promise<LexiconWord[]> {
 }
 
 export async function fetchAllWordTypes(): Promise<WordType[]> {
-  const response = await fetch("https://localhost:7275/Dictionary/GetAllWordTypes", {method: 'POST'});
+  const response = await fetch(`${apiUrl}/Dictionary/GetAllWordTypes`, {method: 'POST'});
   const resData: WordType[] = await response.json();
   if (!response.ok) {
     console.log("ne valja");
@@ -54,7 +55,7 @@ export async function editWord(word: LexiconWord) {
     };
   }
 
-  const response = await fetch("https://localhost:7275/Dictionary/EditWord", {
+  const response = await fetch(`${apiUrl}/Dictionary/EditWord`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

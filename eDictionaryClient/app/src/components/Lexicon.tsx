@@ -1,9 +1,10 @@
 import React from "react";
 import LetterCard from "./UI/LetterCard";
 import { useEffect, useState } from "react";
-import {fetchAllWords} from '../http';
+import { fetchAllWords } from "../http";
 import LexiconWord from "../types/LexiconWord";
 import SameLetterWordsList from "./SameLetterWordsList";
+import NewWordModal from "./NewWordModal";
 
 const GERMAN_ALPHABET = [
   { letter: "A", col_number: 1, name: "ah" },
@@ -35,42 +36,66 @@ const GERMAN_ALPHABET = [
 ];
 
 const Lexicon: React.FC = () => {
-
   const [lexiconWordsState, setLexiconWords] = useState<LexiconWord[]>([]);
 
   useEffect(() => {
-    async function fetchLexiconWords(){
+    async function fetchLexiconWords() {
       //setIsFetching(true);
-      try{
+      try {
         const lexiconWords = await fetchAllWords();
         setLexiconWords(lexiconWords);
-      }
-      catch(error){
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
       //setIsFetching(false);
     }
     fetchLexiconWords();
-  }, [])
+  }, []);
 
-  function handleEditSubmit(word: LexiconWord){
-    setLexiconWords(prevWords =>
-      prevWords.map(existingWord =>
+  function handleEditSubmit(word: LexiconWord) {
+    setLexiconWords((prevWords) =>
+      prevWords.map((existingWord) =>
         existingWord.id === word.id ? word : existingWord
       )
     );
   }
 
+  function handleAddNewWord(word: LexiconWord) {
+    setLexiconWords(prevWords => [...prevWords, word]);
+  }
+
+  const [showModalNewWord, setShowModalNewWord] = useState(false);
+
+  function handleShowModalNewWord(){
+    setShowModalNewWord(!showModalNewWord);
+  }
+
   return (
     <div>
       <h2>German Alphabet</h2>
+      <div className="rtl">
+      <button className="top-0 right-0 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" onClick={handleShowModalNewWord}>
+        Add New Word
+      </button>
+      </div>
+      {showModalNewWord && <NewWordModal onClose={handleShowModalNewWord} onAddSubmit={handleAddNewWord}/>}
+      
       <div className="grid grid-cols-3 gap-4">
-        {Array.from({ length: 3 }, (_, i) => i + 1).map(col_number => (
+        {Array.from({ length: 3 }, (_, i) => i + 1).map((col_number) => (
           <div key={`col-${col_number}`} className="col-span-1">
-            {GERMAN_ALPHABET.filter(item => item.col_number === col_number).map(item => (
+            {GERMAN_ALPHABET.filter(
+              (item) => item.col_number === col_number
+            ).map((item) => (
               <div key={item.letter}>
-                <LetterCard letter={item.letter}/>
-                <SameLetterWordsList words={lexiconWordsState.filter(word => word.firstLetter.toUpperCase()===item.letter.toUpperCase())} onEditSubmit={handleEditSubmit} />
+                <LetterCard letter={item.letter} />
+                <SameLetterWordsList
+                  words={lexiconWordsState.filter(
+                    (word) =>
+                      word.firstLetter.toUpperCase() ===
+                      item.letter.toUpperCase()
+                  )}
+                  onEditSubmit={handleEditSubmit}
+                />
                 {/* {item.letter} - {item.name}
                 <div>
                     <p>word</p>
@@ -83,8 +108,6 @@ const Lexicon: React.FC = () => {
       </div>
     </div>
   );
-  
-  
 };
 
 export default Lexicon;

@@ -69,3 +69,48 @@ export async function editWord(word: LexiconWord) {
   }
 }
 
+export async function addNewWord(word: LexiconWord) {
+  // Create the payload based on the expected API structure
+  const payload: any = {
+    word: word.word,
+    description: word.description,
+    contextExample: word.contextExample,
+    translation: word.translation,
+    wordTypeId: word.wordType.id
+  };
+  
+  // Add genderWordsModel if word.genderWords is not null
+  if (word.genderWords !== null) {
+    payload.genderWordsModel = {
+      musculine: word.genderWords.musculine,
+      feminine: word.genderWords.feminine,
+      neutral: word.genderWords.neutral
+    };
+  }
+  
+  // Add conjugationModel if word.conjugation is not null
+  if (word.conjugation !== null) {
+    payload.conjugationModel = {
+      singular1: word.conjugation.singular1,
+      singular2: word.conjugation.singular2,
+      singular3: word.conjugation.singular3,
+      plural1: word.conjugation.plural1,
+      plural2: word.conjugation.plural2,
+      plural3: word.conjugation.plural3,
+      infinite: word.conjugation.infinite
+    };
+  }
+
+  const response = await fetch(`${apiUrl}/Dictionary/InsertWord`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    console.log("ne valja");
+    throw new Error("Failed to fetch word types");
+  }
+}
